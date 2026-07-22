@@ -1,0 +1,4 @@
+# lists directories and files to omit from version control
+
+*
+.env

@@ -1,14 +1,20 @@
+"""
+This module handles direct API requests to https://api.periodictableofelements.org.
+
+"""
+
 import requests
-import json
+from typing import Dict
 
-# Fetch all elements
-response = requests.get('https://api.periodictableofelements.org/elements/export/json/').json()
 
-#
-def load_all_elements_as_json():
-    with open('periodic_table_data.json', encoding="utf-8", mode='w') as elements_file:
-        json.dump(response, elements_file, indent=2)
+def get_today_element() -> Dict[str, str | int]:
+    """
+    Gets information on the element of the day.
 
+    :return: element data in json format
+    """
+    today_element_info = requests.get("https://api.periodictableofelements.org/elements/element-of-the-day/").json()
+    return today_element_info
 
 
 

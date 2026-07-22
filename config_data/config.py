@@ -1,3 +1,8 @@
+"""
+This module sets up the main bot parameters used for configuring the bot.
+
+"""
+
 import os
 from dotenv import load_dotenv, find_dotenv
 
@@ -7,10 +12,10 @@ else:
     load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-API_KEY = os.getenv("API_KEY")
-DB_PATH="database.db"
+DB_PATH = "database.db"
 
 DEFAULT_COMMANDS = (
     ("start", "start the bot"),
-    ("help", "show all commands")
+    ("help", "show all commands"),
+    ("today_element", "show the element of the day")
 )

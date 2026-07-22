@@ -2,15 +2,22 @@ from loader import bot
 from telebot.types import Message
 from database.models import User
 from peewee import IntegrityError
-from config_data.config import DEFAULT_COMMANDS
+from . import help
+
 
 @bot.message_handler(commands=["start"])
-def bot_help(message: Message):
+def bot_start(message: Message) -> None:
+    """
+    Greets the user based on prior chat history
+    and launches the /help command to introduce available commands.
+
+    :param message: the user's message
+    :return:
+    """
     user_id = message.from_user.id
     username = message.from_user.username
     first_name = message.from_user.first_name
     last_name = message.from_user.last_name
-
     try:
         User.create(
             user_id=user_id,
@@ -18,6 +25,11 @@ def bot_help(message: Message):
             first_name=first_name,
             last_name=last_name,
         )
-        bot.reply_to(message, "Hello, {name}!".format(name=first_name))
     except IntegrityError:
-        bot.reply_to(message, "It's good to see you again, {name}!".format(name=first_name))
+        greeting_text = "It's good to see you again, {name}!".format(name=first_name)
+    else:
+        greeting_text = "Hello, {name}!".format(name=first_name)
+    finally:
+        intro_text = "\nI can tell you a bit about the elements in the Periodic Table."
+        bot.send_message(chat_id=message.chat.id, text=greeting_text+intro_text)
+        help.bot_help(message)

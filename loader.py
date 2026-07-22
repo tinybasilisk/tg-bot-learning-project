@@ -1,3 +1,8 @@
+"""
+This module initialises the bo and  loads all necessary modules.
+
+"""
+
 from telebot import TeleBot
 from telebot.storage import StateMemoryStorage
 from config_data import config

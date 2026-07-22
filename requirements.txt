@@ -1,2 +1,5 @@
+# lists project package requirements necessary to make the projcet portable
+
 pyTelegramBotAPI==4.36.0
 python-dotenv==1.2.2
+peewee==4.2.6
