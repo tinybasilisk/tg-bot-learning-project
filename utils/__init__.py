@@ -3,5 +3,5 @@ This package handles supplementary internal functions used throughout the projec
 
 """
 
-from . import set_bot_commands
+from .set_bot_commands import set_default_commands
 from . import misc

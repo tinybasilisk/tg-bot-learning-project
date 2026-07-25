@@ -1,7 +1,6 @@
 from telebot.types import Message
 from loader import bot
-from api.requests import get_today_element
-from api.process_elements import today_element_to_str
+from api import get_today_element, today_element_to_str
 
 
 @bot.message_handler(commands=["today_element"])

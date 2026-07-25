@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv, find_dotenv
 
 if not find_dotenv():
-    exit("Environment variables not loaded т.к отсутствует файл .env")
+    exit("Environment variables not loaded as there is no .env file")
 else:
     load_dotenv()
 
@@ -17,5 +17,6 @@ DB_PATH = "database.db"
 DEFAULT_COMMANDS = (
     ("start", "start the bot"),
     ("help", "show all commands"),
-    ("today_element", "show the element of the day")
+    ("today_element", "show the element of the day"),
+    ("guess_category", "guess the type of a random element")
 )

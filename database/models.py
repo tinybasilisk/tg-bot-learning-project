@@ -4,7 +4,7 @@ This module handles working with data models.
 """
 
 from peewee import SqliteDatabase, Model, CharField, IntegerField
-from config_data.config import DB_PATH
+from config_data import DB_PATH
 
 db = SqliteDatabase(DB_PATH)
 
@@ -27,4 +27,4 @@ class User(BaseModel):
     user_id = IntegerField(primary_key=True)
     username = CharField()
     first_name = CharField()
-    last_name = CharField(null=True)
+

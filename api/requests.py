@@ -4,7 +4,7 @@ This module handles direct API requests to https://api.periodictableofelements.o
 """
 
 import requests
-from typing import Dict
+from typing import Dict, List
 
 
 def get_today_element() -> Dict[str, str | int]:
@@ -17,4 +17,6 @@ def get_today_element() -> Dict[str, str | int]:
     return today_element_info
 
 
-
+def load_elements() -> List[dict]:
+    all_elements = requests.get('https://api.periodictableofelements.org/elements/export/json/').json()
+    return all_elements

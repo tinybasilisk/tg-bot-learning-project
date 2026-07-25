@@ -3,7 +3,7 @@ This module handles creating and queering databases.
 
 """
 
-from database.models import BaseModel, db
+from .models import BaseModel, db
 
 
 def create_models() -> None:

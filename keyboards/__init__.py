@@ -1,2 +1,2 @@
 from . import inline
-from . import reply
+from .reply import gen_categories_markup
