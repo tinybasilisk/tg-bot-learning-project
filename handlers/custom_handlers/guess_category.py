@@ -3,22 +3,28 @@ from loader import bot
 from api import get_all_elements, ELEMENT_CATEGORIES, get_element_name, get_element_category
 from keyboards import gen_categories_markup
 from states import ElementCategoryState
+from database import User, log_command
 import random
 
 
 @bot.message_handler(commands=["guess_category"])
 def bot_guess_category(message: Message):
+    user = User.get_or_none(User.user_id == message.from_user.id)
+    if user is None:
+        bot.reply_to(message, "You are not registered. Please use /start to continue.")
+        return
+
     all_elements_tuple = get_all_elements()
     element = random.choice(all_elements_tuple)
-    question = "The element is called <b>{element_name}</b>.\n\nWhat type of element is it?".format(
+    question = "Try to guess the category of a random element.\nWhat type of element is <b>{element_name}</b>?".format(
         element_name=get_element_name(element=element)
     )
     bot.send_message(
         chat_id=message.chat.id, text=question, reply_markup=gen_categories_markup(), parse_mode="HTML"
     )
-    with bot.retrieve_data(user_id=message.from_user.id, chat_id=message.chat.id) as data:
+    with bot.retrieve_data(user_id=user.user_id, chat_id=message.chat.id) as data:
         data["element"] = element
-        bot.set_state(user_id=message.from_user.id, state=ElementCategoryState.category, chat_id=message.chat.id)
+        bot.set_state(user_id=user.user_id, state=ElementCategoryState.category, chat_id=message.chat.id)
 
 
 @bot.message_handler(state=ElementCategoryState.category)
@@ -28,11 +34,16 @@ def process_element_category(message: Message):
         # handles user not using the keyboard
         bot.send_message(chat_id=message.chat.id, text="Unknown category! Please use the keyboard to answer.")
     else:
-        with bot.retrieve_data(user_id=message.from_user.id, chat_id=message.chat.id) as data:
+        user = User.get(User.user_id == message.from_user.id)
+        with bot.retrieve_data(user_id=user.user_id, chat_id=message.chat.id) as data:
             element = data["element"]
             if user_answer == get_element_category(element):
-                feedback = "That's correct!"
+                feedback = "That's correct! Good guess."
+                log_command(user=user, command="guess_category",
+                            element_name=get_element_name(element), was_correct=True)
             else:
-                feedback = "That's wrong."
-            bot.delete_state(user_id=message.from_user.id, chat_id=message.chat.id)
+                feedback = "That's wrong. Maybe try another time."
+                log_command(user=user, command="guess_category",
+                            element_name=get_element_name(element), was_correct=False)
+            bot.delete_state(user_id=user.user_id, chat_id=message.chat.id)
             bot.send_message(chat_id=message.chat.id, text=feedback, reply_markup=ReplyKeyboardRemove())

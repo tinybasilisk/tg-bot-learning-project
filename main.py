@@ -10,4 +10,3 @@ if __name__ == "__main__":
     set_default_commands(bot)
     bot.add_custom_filter(StateFilter(bot))
     bot.infinity_polling()
-

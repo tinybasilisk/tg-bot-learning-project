@@ -4,5 +4,5 @@ Contains modules for creating and queering databases and working with data model
 
 """
 
-from .crud import create_models
-from .models import db, BaseModel, User
+from .crud import create_models, log_command
+from .models import db, BaseModel, User, CommandHistory

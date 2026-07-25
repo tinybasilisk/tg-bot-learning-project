@@ -18,5 +18,8 @@ DEFAULT_COMMANDS = (
     ("start", "start the bot"),
     ("help", "show all commands"),
     ("today_element", "show the element of the day"),
-    ("guess_category", "guess the type of a random element")
+    ("guess_category", "guess the type of a random element"),
+    ("history", "show previous commands")
 )
+
+DATE_FORMAT = "%d-%m-%Y %H:%M"
