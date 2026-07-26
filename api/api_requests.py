@@ -18,5 +18,10 @@ def get_today_element() -> Dict[str, str | int]:
 
 
 def load_elements() -> List[dict]:
+    """
+    Gets information on all elements at once.
+
+    :return: elements data in the format of list of json
+    """
     all_elements = requests.get('https://api.periodictableofelements.org/elements/export/json/').json()
     return all_elements

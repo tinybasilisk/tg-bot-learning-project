@@ -6,6 +6,12 @@ from typing import List
 
 @bot.message_handler(commands=["history"])
 def show_history(message: Message) -> None:
+    """
+    Handles the command to show user history for the command run.
+
+    :param message: the user's command message
+    :return:
+    """
     user = User.get_or_none(User.user_id == message.from_user.id)
     if user is None:
         bot.reply_to(message, "You are not registered. Please use /start to continue.")

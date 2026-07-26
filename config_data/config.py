@@ -22,4 +22,8 @@ DEFAULT_COMMANDS = (
     ("history", "show previous commands")
 )
 
-DATE_FORMAT = "%d-%m-%Y %H:%M"
+# date format for loging command history
+COMMAND_DATE_FORMAT = "%d-%m-%Y %H:%M"
+
+# date format to display in /today_element command
+TODAY_DATE_FORMAT = "%d-%m-%Y"

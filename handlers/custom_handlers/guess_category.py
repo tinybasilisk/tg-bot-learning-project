@@ -8,7 +8,15 @@ import random
 
 
 @bot.message_handler(commands=["guess_category"])
-def bot_guess_category(message: Message):
+def bot_guess_category(message: Message) -> None:
+    """
+    Handles the command to have the user try to guess the category of a random element. Uses a custom keyboard.
+    Logs the command to the database associated with the User model.
+
+    :param message: the user's command message
+    :return:
+    """
+
     user = User.get_or_none(User.user_id == message.from_user.id)
     if user is None:
         bot.reply_to(message, "You are not registered. Please use /start to continue.")
@@ -28,7 +36,14 @@ def bot_guess_category(message: Message):
 
 
 @bot.message_handler(state=ElementCategoryState.category)
-def process_element_category(message: Message):
+def process_element_category(message: Message) -> None:
+    """
+    Processes the user input through a custom keyboard, handles any other text messages.
+    Logs the command to the database associated with the User model.
+
+    :param message: the user's message, text or custom keyboard input
+    :return:
+    """
     user_answer = message.text
     if user_answer not in ELEMENT_CATEGORIES.values():
         # handles user not using the keyboard

@@ -8,8 +8,7 @@ from .help import bot_help
 @bot.message_handler(commands=["start"])
 def bot_start(message: Message) -> None:
     """
-    Greets the user based on prior chat history
-    and launches the /help command to introduce available commands.
+    Greets the user based on prior chat history and launches the /help command to introduce available commands.
 
     :param message: the user's message
     :return:

@@ -8,6 +8,7 @@ from database import User, log_command
 def bot_help(message: Message) -> None:
     """
     Explains the bot's functionality by listing available commands. Removes any applied states or keyboards.
+    Logs the command to the database associated with the User model.
 
     :param message: the user's message
     :return:
