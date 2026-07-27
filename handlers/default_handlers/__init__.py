@@ -1,3 +1,3 @@
-from . import help
-from . import start
-from . import echo
+from .help import bot_help
+from .start import bot_start
+from .echo import bot_echo

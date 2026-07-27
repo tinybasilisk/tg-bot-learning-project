@@ -2,9 +2,11 @@
 This module handles working with data models.
 
 """
-
-from peewee import SqliteDatabase, Model, CharField, IntegerField
-from config_data.config import DB_PATH
+from fontTools.unicodedata import block
+from peewee import SqliteDatabase, Model, CharField, IntegerField, ForeignKeyField, BooleanField, \
+    DateTimeField
+from config_data import DB_PATH, COMMAND_DATE_FORMAT
+import datetime
 
 db = SqliteDatabase(DB_PATH)
 
@@ -20,11 +22,44 @@ class BaseModel(Model):
 
 class User(BaseModel):
     """
-    The class models a user by tracking their Telegram user id, username,
-    first name from profile, and last name from profile.
+    The class models a user by tracking their Telegram user id, username, and
+    first name from profile.
 
     """
     user_id = IntegerField(primary_key=True)
     username = CharField()
     first_name = CharField()
-    last_name = CharField(null=True)
+
+
+class CommandHistory(BaseModel):
+    """
+    The class models a command run by the user by tracking the user, the date and time the command was run,
+    the command name string, and command response data, when applicable: the name of the element,
+    whether the user guessed the category correctly, what block the element belongs to,
+    what criteria the elements were sorted by, whether the sort order was ascending.
+    """
+    user = ForeignKeyField(User, backref="history")
+    date_time = DateTimeField(default=datetime.datetime.now)
+    command = CharField()
+    # for guess_category and today_element commands
+    element_name = CharField(null=True)
+    # for guess_category command
+    was_correct = BooleanField(null=True)
+    # for show_top_five command
+    block = CharField(null=True)
+    criteria = CharField(null=True)
+    ascending = BooleanField(null=True)
+
+    def __str__(self):
+        time_str = self.date_time.strftime(COMMAND_DATE_FORMAT)
+        line = f"{time_str} — /{self.command:<15}"
+
+        if self.element_name is not None:
+            line += f" {self.element_name:<15}"
+        if self.was_correct is not None:
+            line += " guessed correctly" if self.was_correct else " guessed wrong"
+        # these are here for the remaining /show_top_five command
+        if None not in (self.block, self.criteria, self.ascending):
+            line += f"block: {self.block} sorted {self.criteria:<20} ascending: {self.ascending}"
+
+        return line
